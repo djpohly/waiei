@@ -1,0 +1,68 @@
+グループ名（青色のホイール）の場合、
+表示されるテキストと同じ名前の画像を用意することで、
+自動的に読み込まれます。
+
+例：BPMソート時の180-199フォルダ画像の場合
+180-190.png
+
+BPMはキリがないんで画像用意してません＾＾；
+
+存在しない場合は _group.png が読み取られます。
+「?」はファイル名で使えないため、「_」を代わりに使用してください。
+
+※現在、?以外のファイル名に使えない文字には対応していないので、
+　必要であればA.Cに言ってください。
+
+----
+
+モード名（オレンジ色のホイール）の場合、
+言語設定によって表示されるテキストが異なるので
+Languageファイル内で定義されている名前を指定します。
+Themes/_fallback/Languages/ にある言語ファイルで定義されています。
+
+[MusicWheel]
+Portal=Portal
+Random=Random
+Roulette=Roulette
+Empty=- EMPTY -
+ArtistText=Artist
+BpmText=BPM
+ChallengeMeterText=Challenge Meter
+DoubleEasyMeterText=Easy Meter (Double)
+DoubleMediumMeterText=Medium Meter (Double)
+DoubleHardMeterText=Hard Meter (Double)
+DoubleChallengeMeterText=Challenge Meter (Double)
+EasyMeterText=Easy Meter
+GenreText=Genre
+GroupText=Group
+HardMeterText=Hard Meter
+LengthText=Length
+MediumMeterText=Medium Meter
+PopularityText=Player's Best!
+PreferredText=Preferred
+TitleText=Title
+RecentText=Recent
+TopGradesText=Top Grades
+CoursesText=Courses
+AllCoursesText=All Courses
+NonstopText=Nonstop Courses
+OniText=Oni Courses
+EndlessText=Endless Courses
+SurvivalText=Survival Courses
+NormalModeText=Normal Mode
+BattleModeText=Battle Mode (Disabled)
+
+上記の=の左側をファイル名にします。
+例：Genreフォルダ（日本語の場合「ジャンル順」フォルダ）
+GenreText.png
+
+上記の定義にはありませんが、OtherとN/Aだけ読み取れるようにしています。
+Other.png / NotAvailable.png が該当します。
+
+存在しない場合は _fallback.png が読み取られます。
+
+----
+
+なお、対応拡張子は以下の通りです。
+png, avi, flv, mp4, mpg, mpeg, jpg, jpeg, gif, bmp
+ただし png しか動作テストしていないので注意。
