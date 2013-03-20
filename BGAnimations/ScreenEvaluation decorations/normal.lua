@@ -587,7 +587,7 @@ t[#t+1] = Def.ActorFrame {
 			self:playcommand("SwitchSongTitle");
 		end;
 	end;
-	LoadActor(THEME:GetPathS("Common","value")) .. {
+	LoadActor(THEME:GetPathS("ScreenEvaluation","SwitchTitle")) .. {
 		SwitchSongTitleCommand = function(self)
 		--	if not GAMESTATE:IsCourseMode() then
 				self:stop();
