@@ -105,11 +105,42 @@ local function PercentScore( pn )
 
 				local pss = STATSMAN:GetPlayedStageStats(1):GetPlayerStageStats(pn);
 				if pss then
-					local pct = pss:GetPercentDancePoints();
+					local tStats = {
+						W1			= pss:GetTapNoteScores('TapNoteScore_W1');
+						W2			= pss:GetTapNoteScores('TapNoteScore_W2');
+						W3			= pss:GetTapNoteScores('TapNoteScore_W3');
+						W4			= pss:GetTapNoteScores('TapNoteScore_W4');
+						W5			= pss:GetTapNoteScores('TapNoteScore_W5');
+						Miss		= pss:GetTapNoteScores('TapNoteScore_Miss');
+						HitMine		= pss:GetTapNoteScores('TapNoteScore_HitMine');
+						AvoidMine	= pss:GetTapNoteScores('TapNoteScore_AvoidMine');
+						Held		= pss:GetHoldNoteScores('HoldNoteScore_Held');
+						LetGo		= pss:GetHoldNoteScores('HoldNoteScore_LetGo');
+						Total		= 1;
+						HoldsAndRolls = 0;
+						Seconds		= pss:GetCurrentLife();
+					};
+					
+					local itg = ( tStats["W1"]*7 + tStats["W2"]*6 + tStats["W3"]*5 + tStats["W4"]*4 + tStats["W5"]*2 + tStats["Held"]*7 );
+					
+					-- itg_max is problematic if the players hold down START to exit prematurely...
+					local itg_max = ( tStats["W1"] + tStats["W2"] + tStats["W3"] + tStats["W4"] + tStats["W5"] + tStats["Miss"] + tStats["Held"] + tStats["LetGo"] )*7;
+					local itg_score = itg/itg_max * 100;
+					
+					local function round(num, decimals)
+						local mult = 10^(decimals or 0)
+						return math.floor(num * mult + 0.5) / mult
+					end
+					
+					local itg_score_rounded = round(itg_score, 2);
+					
 					if pct == 1 then
 						self:settext("100%");
 					else
-						self:settext(FormatPercentScore(pct));
+						-- This doesn't format quite the way I want it to
+						-- for example, it will drop the trailing 0 from
+						-- a 99.30% so that it prints as 99.3%
+						self:settext(itg_score_rounded.."%");
 					end;
 				end;
 			end;
