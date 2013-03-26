@@ -5,7 +5,11 @@ t[#t+1] = Def.Quad {
 }
 
 t[#t+1] = Def.Quad {
-	InitCommand = cmd(zoomto,200,150;Center;diffuse,Color.Black;diffusealpha,0.85),
+	InitCommand = cmd(Center;zoomto,200,150;diffuse,Color.Black),
+}
+
+t[#t+1] = Border(200, 150, 2) .. {
+	InitCommand = cmd(Center),
 }
 
 return t
