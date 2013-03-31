@@ -8,7 +8,7 @@ function Border(width, height, bw)
 			InitCommand = cmd(zoomto,width,height;MaskDest),
 		},
 		Def.Quad {
-			InitCommand = cmd(clearzbuffer,true),
+			InitCommand = cmd(diffusealpha,0;clearzbuffer,true),
 		},
 	}
 end
