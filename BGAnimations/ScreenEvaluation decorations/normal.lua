@@ -125,22 +125,21 @@ local function PercentScore( pn )
 					
 					-- itg_max is problematic if the players hold down START to exit prematurely...
 					local itg_max = ( tStats["W1"] + tStats["W2"] + tStats["W3"] + tStats["W4"] + tStats["W5"] + tStats["Miss"] + tStats["Held"] + tStats["LetGo"] )*7;
-					local itg_score = itg/itg_max * 100;
-					
-					local function round(num, decimals)
-						local mult = 10^(decimals or 0)
-						return math.floor(num * mult + 0.5) / mult
-					end
-					
-					local itg_score_rounded = round(itg_score, 2);
-					
-					if pct == 1 then
-						self:settext("100%");
+					if itg_max > 0 then
+						local itg_score = itg/itg_max * 100;
+						local itg_display = string.format("%.2f", itg_score);
+						
+						if itg_display == "100.00" then
+							-- Don't allow a round-up to 100%
+							if itg < itg_max then
+								itg_display = "99.99";
+							else
+								itg_display = "100";
+							end
+						end
+						self:settext(itg_display .. "%");
 					else
-						-- This doesn't format quite the way I want it to
-						-- for example, it will drop the trailing 0 from
-						-- a 99.30% so that it prints as 99.3%
-						self:settext(itg_score_rounded.."%");
+						self:settext("0.00%");
 					end;
 				end;
 			end;
