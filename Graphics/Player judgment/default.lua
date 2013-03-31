@@ -1,7 +1,7 @@
 local c;
 local player = Var "Player";
 local bShowProtiming = GetUserPrefB("UserPrefProtiming" .. ToEnumShortString(player) );
-local jmLabel=GetUserPref_Theme("UserJudgementLabel");
+local judType=GetUserPref_Theme("UserJudgementLabel" .. ToEnumShortString(player) ) or "StepMania";
 
 local function MakeAverage( t )
 	local sum = 0;
@@ -47,18 +47,7 @@ local TNSFrames = {
 	TapNoteScore_W5 = 4;
 	TapNoteScore_Miss = 5;
 };
-local judType;
-if jmLabel then
-	if jmLabel=="DDR" then
-		judType="DDR";
-	elseif jmLabel=="DDR SuperNOVA" then
-		judType="SuperNOVA";
-	else
-		judType="StepMania";
-	end
-else
-	judType="StepMania";
-end;
+
 local t = Def.ActorFrame {};
 t[#t+1] = Def.ActorFrame {
 	LoadActor(THEME:GetPathG("Judgment",""..judType)) .. {
