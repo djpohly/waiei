@@ -577,8 +577,13 @@ for pn in ivalues(PlayerNumber) do
 				SetCommand=function(self)
 					self:stoptweening();
 					local pss=STATSMAN:GetPlayedStageStats(st_max-(st_index-1)):GetPlayerStageStats(pn);
-					local grade=ToEnumShortString(pss:GetGrade());
-					self:Load(THEME:GetPathG("GradeDisplayEval",grade));
+					local itg=ItgScore(pss);
+					local grade=GetGradeFromPercent(itg[1] / itg[2]);
+					-- Reserve top tier for perfect performances
+					if grade == "Grade_Tier01" and itg[1] < itg[2] then
+						grade = "Grade_Tier02"
+					end
+					self:Load(THEME:GetPathG("GradeDisplayEval",ToEnumShortString(grade)));
 					if SCREEN_HEIGHT/SCREEN_WIDTH<0.61 then
 						self:x((pn==PLAYER_1) and 120 or SCREEN_RIGHT-120);
 						self:zoom(1.0);

@@ -105,42 +105,8 @@ local function PercentScore( pn )
 
 				local pss = STATSMAN:GetPlayedStageStats(1):GetPlayerStageStats(pn);
 				if pss then
-					local tStats = {
-						W1			= pss:GetTapNoteScores('TapNoteScore_W1');
-						W2			= pss:GetTapNoteScores('TapNoteScore_W2');
-						W3			= pss:GetTapNoteScores('TapNoteScore_W3');
-						W4			= pss:GetTapNoteScores('TapNoteScore_W4');
-						W5			= pss:GetTapNoteScores('TapNoteScore_W5');
-						Miss		= pss:GetTapNoteScores('TapNoteScore_Miss');
-						HitMine		= pss:GetTapNoteScores('TapNoteScore_HitMine');
-						AvoidMine	= pss:GetTapNoteScores('TapNoteScore_AvoidMine');
-						Held		= pss:GetHoldNoteScores('HoldNoteScore_Held');
-						LetGo		= pss:GetHoldNoteScores('HoldNoteScore_LetGo');
-						Total		= 1;
-						HoldsAndRolls = 0;
-						Seconds		= pss:GetCurrentLife();
-					};
-					
-					local itg = ( tStats["W1"]*7 + tStats["W2"]*6 + tStats["W3"]*5 + tStats["W4"]*4 + tStats["W5"]*2 + tStats["Held"]*7 );
-					
-					-- itg_max is problematic if the players hold down START to exit prematurely...
-					local itg_max = ( tStats["W1"] + tStats["W2"] + tStats["W3"] + tStats["W4"] + tStats["W5"] + tStats["Miss"] + tStats["Held"] + tStats["LetGo"] )*7;
-					if itg_max > 0 then
-						local itg_score = itg/itg_max * 100;
-						local itg_display = string.format("%.2f", itg_score);
-						
-						if itg_display == "100.00" then
-							-- Don't allow a round-up to 100%
-							if itg < itg_max then
-								itg_display = "99.99";
-							else
-								itg_display = "100";
-							end
-						end
-						self:settext(itg_display .. "%");
-					else
-						self:settext("0.00%");
-					end;
+					itg = ItgScore(pss)
+					self:settext(ItgScoreString(itg[1], itg[2]))
 				end;
 			end;
 			UpdateNetEvalStatsMessageCommand=function(self,params)
@@ -440,6 +406,31 @@ for pn in ivalues(PlayerNumber) do
 				};
 			};
 		end;
+		t[#t+1] = Def.Sprite{
+			InitCommand=function(self)
+				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
+				local itg=ItgScore(pss);
+				local grade=GetGradeFromPercent(itg[1] / itg[2]);
+				-- Reserve top tier for perfect performances
+				if grade == "Grade_Tier01" and itg[1] < itg[2] then
+					grade = "Grade_Tier02"
+				end
+				self:Load(THEME:GetPathG("GradeDisplayEval",ToEnumShortString(grade)));
+				if SCREEN_HEIGHT/SCREEN_WIDTH<0.61 then
+					self:x((pn==PLAYER_1) and 120 or SCREEN_RIGHT-120);
+					self:zoom(1.0);
+					self:y(295);
+				elseif SCREEN_HEIGHT/SCREEN_WIDTH<0.65 then
+					self:x((pn==PLAYER_1) and 90 or SCREEN_RIGHT-90);
+					self:zoom(0.86);
+					self:y(304);
+				else
+					self:x((pn==PLAYER_1) and 60 or SCREEN_RIGHT-60);
+					self:zoom(0.72);
+					self:y(313);
+				end;
+			end;
+		};
 	end;
 end;
 

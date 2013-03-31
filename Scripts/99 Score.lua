@@ -91,3 +91,46 @@ function GetCustomScoreMode()
 	end;
 	return customscore;
 end;
+
+function ItgScoreString(pts, max)
+	if max <= 0 then
+		return "0.00%"
+	end;
+	local pct = pts/max * 100
+	local display = string.format("%.2f", pct)
+
+	if display == "100.00" then
+		-- Don't allow a round-up to 100%
+		if pts < max then
+			return "99.99%"
+		else
+			return "100%"
+		end
+	end
+	return display .. "%"
+end
+
+function ItgScore(pss)
+	local tStats = {
+		W1			= pss:GetTapNoteScores('TapNoteScore_W1');
+		W2			= pss:GetTapNoteScores('TapNoteScore_W2');
+		W3			= pss:GetTapNoteScores('TapNoteScore_W3');
+		W4			= pss:GetTapNoteScores('TapNoteScore_W4');
+		W5			= pss:GetTapNoteScores('TapNoteScore_W5');
+		Miss		= pss:GetTapNoteScores('TapNoteScore_Miss');
+		HitMine		= pss:GetTapNoteScores('TapNoteScore_HitMine');
+		AvoidMine	= pss:GetTapNoteScores('TapNoteScore_AvoidMine');
+		Held		= pss:GetHoldNoteScores('HoldNoteScore_Held');
+		LetGo		= pss:GetHoldNoteScores('HoldNoteScore_LetGo');
+		Total		= 1;
+		HoldsAndRolls = 0;
+		Seconds		= pss:GetCurrentLife();
+	};
+
+	local itg = ( tStats["W1"]*7 + tStats["W2"]*6 + tStats["W3"]*5 + tStats["W4"]*4 + tStats["W5"]*2 + tStats["Held"]*7 );
+
+	-- itg_max is problematic if the players hold down START to exit prematurely...
+	local itg_max = ( tStats["W1"] + tStats["W2"] + tStats["W3"] + tStats["W4"] + tStats["W5"] + tStats["Miss"] + tStats["Held"] + tStats["LetGo"] )*7;
+
+	return {itg, itg_max}
+end
