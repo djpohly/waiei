@@ -262,7 +262,7 @@ function PlayerJudgment()
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { 'DDR','DDR SuperNOVA','ITG','Kanji','Emoticon' },
+		Choices = { 'DDR','DDR SuperNOVA','ITG','Emoticon' },
 		LoadSelections = function(self, list, pn)
 			if GetUserPref_Theme("UserJudgementLabel" .. ToEnumShortString(pn)) ~= nil then
 				
@@ -274,10 +274,8 @@ function PlayerJudgment()
 					list[2] = true
 				elseif bJudgment == 'ITG' then
 					list[3] = true
-				elseif bJudgment == 'Kanji' then
-					list[4] = true
 				elseif bJudgment == 'Emoticon' then
-					list[5] = true
+					list[4] = true
 				end;
 				
 			else
@@ -293,8 +291,6 @@ function PlayerJudgment()
 			elseif list[3] then
 				bSave='ITG';
 			elseif list[4] then
-				bSave='Kanji';			
-			elseif list[5] then
 				bSave='Emoticon';
 			end;
 			SetUserPref_Theme("UserJudgementLabel" .. ToEnumShortString(pn), bSave);
